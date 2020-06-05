@@ -1,8 +1,10 @@
 package com.example.activitylifecycle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -16,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.textView);
+
+        if(savedInstanceState != null){
+            textView.setText(savedInstanceState.getString("textToBundle"));
+        }
         Log.d("Lifecycle method", "onCreate()");
         textView.append("onCreate()" + "\n"); // added text to last text
 
@@ -54,5 +60,13 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d("Lifecycle method", "onDestroy()");
         textView.append("onDestroy()" + "\n");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("onSaveInstanceState", "onSaveInstanceState()");
+        textView.append("onSaveInstanceState()" + "\n");
+        outState.putString("textToBundle", textView.getText().toString());
     }
 }
